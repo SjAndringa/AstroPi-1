@@ -19,10 +19,10 @@ def initialize():
 
 
 def getaccel():
-    #sense = SenseHat()
-    #data = sense.get_accelerometer_raw()
-    #return math.sqrt((data["x"]/G)**2 + (data["y"]/G)**2 + (data["z"]/G)**2)   # use Pythagora to calculate total acceleration in m/s²
-    return 25
+    sense = SenseHat()
+    data = sense.get_accelerometer_raw()
+    return math.sqrt((data["x"]/G)**2 + (data["y"]/G)**2 + (data["z"]/G)**2)   # use Pythagora to calculate total acceleration in m/s²
+    #return 25
 
 def formula(x,a,R,t0,t1):
     
