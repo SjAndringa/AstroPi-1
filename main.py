@@ -1,7 +1,7 @@
 import math
 import time
 #import RTIMU
-#from sense_hat import SenseHat
+from sense_hat import SenseHat
 import numpy as np
 from scipy.optimize import fsolve
 
@@ -19,10 +19,10 @@ def initialize():
 
 
 def getaccel():
-    #sense = SenseHat()
-    #data = sense.get_accelerometer_raw()
-    #return math.sqrt((data["x"]/G)**2 + (data["y"]/G)**2 + (data["z"]/G)**2)   # use Pythagora to calculate total acceleration in m/s²
-    return 25
+    sense = SenseHat()
+    data = sense.get_accelerometer_raw()
+    return math.sqrt((data["x"]/G)**2 + (data["y"]/G)**2 + (data["z"]/G)**2)   # use Pythagora to calculate total acceleration in m/s²
+    #return 25
 
 def formula(x,a,R,t0,t1):
     
@@ -55,8 +55,8 @@ def removeoutliers(accelerations): # thanks to Nessie: https://nessy.info/post/2
 t0=time.time_ns()
 #verander onderstaande code zodat je een minuut lang meet, of 5 minuten
 accelerations = sampledata(t0)
-accelerations = removeoutliers(accelerations)
-accel = np.mean(accelerations)
+#accelerations = removeoutliers(accelerations)
+accel = np.median(accelerations)
 t1=time.time_ns()
 x=V_0
 v=fsolve(formula,V_0, args=(accel,R,t0,t1))[0]
