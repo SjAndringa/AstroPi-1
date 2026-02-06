@@ -30,9 +30,12 @@ def formula(x,a,R,t0,t1):
                                             # acceleration is second derivative of sine function
                                             # y = R sin (omega*t) with omega = v * R
 
+def nothing():
+    return
 
 initialize
 t0=time.time_ns()
+#verander onderstaande code zodat je een minuut lang meet, of 5 minuten
 accel = getaccel()
 t1=time.time_ns()
 x=V_0
