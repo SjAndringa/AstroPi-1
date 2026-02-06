@@ -33,7 +33,7 @@ def formula(x,a,R,t0,t1):
                                             # acceleration is second derivative of sine function
                                             # y = R sin (omega*t) with omega = v * R
 
-def sampledata(t0,SampleTime):
+def sampledata(t0,SampleTime,SampleInterval):
     accelerations=[getaccel()]
     while time.time_ns ()- t0 < SampleTime:
         accelerations.append(getaccel())
@@ -42,24 +42,10 @@ def sampledata(t0,SampleTime):
     return accelerations
 
 
-def removeoutliers(accelerations): # thanks to Nessie: https://nessy.info/post/2025-05-23-understanding-quartiles/#:~:text=To%20find%20quartiles%20using%20the,median%20of%20the%20upper%20half
-    # not working is accelerations is not sorted
-    lenaccel = len(accelerations)
-    if lenaccel % 2:
-        #lenght is odd
-        nQ1=(lenaccel-1)//4-1   #position of Q1, zero based array
-        nQ3=(lensaccel-1)//4*3-1
-        
-    else:
-        nQ1=(lenaccel//4)
-        nQ3=(lenaccel//4*3)
-        
-    return accelerations[nQ1:nQ3]
-
-#initialize
+initialize()
 t0=time.time_ns()
-#verander onderstaande code zodat je een minuut lang meet, of 5 minuten
-accelerations = sampledata(t0,SampleTime)
+#verander onderstaande code zodat je een minuut lang meet, of 8 minuten
+accelerations = sampledata(t0,SampleTime,SampleInterval)
 #accelerations = removeoutliers(accelerations)
 accel = np.median(accelerations)
 t1=time.time_ns()
