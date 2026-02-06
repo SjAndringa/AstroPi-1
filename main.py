@@ -1,7 +1,7 @@
 import math
 import time
 #import RTIMU
-from sense_hat import SenseHat
+#from sense_hat import SenseHat
 import numpy as np
 from scipy.optimize import fsolve
 
@@ -19,10 +19,10 @@ def initialize():
 
 
 def getaccel():
-    sense = SenseHat()
-    data = sense.get_accelerometer_raw()
-    return math.sqrt((data["x"]/G)**2 + (data["y"]/G)**2 + (data["z"]/G)**2)   # use Pythagora to calculate total acceleration in m/s²
-    #return 25
+    #sense = SenseHat()
+    #data = sense.get_accelerometer_raw()
+    #return math.sqrt((data["x"]/G)**2 + (data["y"]/G)**2 + (data["z"]/G)**2)   # use Pythagora to calculate total acceleration in m/s²
+    return 25
 
 def formula(x,a,R,t0,t1):
     
@@ -36,8 +36,9 @@ def sampledata(t0):
         accelerations.append(getaccel)
     return accelerations
 
+
 def removeoutliers(accelerations): # thanks to Nessie: https://nessy.info/post/2025-05-23-understanding-quartiles/#:~:text=To%20find%20quartiles%20using%20the,median%20of%20the%20upper%20half
-    accelerations.sort()
+    # not working is accelerations is not sorted
     lenaccel = len(accelerations)
     if lenaccel % 2:
         #lenght is odd
@@ -50,14 +51,16 @@ def removeoutliers(accelerations): # thanks to Nessie: https://nessy.info/post/2
         
     return accelerations[nQ1:nQ3]
 
-initialize
+#initialize
 t0=time.time_ns()
 #verander onderstaande code zodat je een minuut lang meet, of 5 minuten
-accel = getaccel()
+accelerations = sampledata(t0)
+accelerations = removeoutliers(accelerations)
+accel = np.mean(accelerations)
 t1=time.time_ns()
 x=V_0
-v=fsolve(formula,V_0, args=(accel,R,t0,t1))
+v=fsolve(formula,V_0, args=(accel,R,t0,t1))[0]
 
 f = open('result.txt', 'w')
-print(round(v[0]/1000,4),file=f)
+print(round(v/1000,4),file=f)
 f.close()
