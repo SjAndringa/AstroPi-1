@@ -19,10 +19,10 @@ def initialize():
 
 
 def getaccel():
-    #sense = SenseHat()
-    #data = sense.get_accelerometer_raw()
-    #return math.sqrt((data["x"]/G)**2 + (data["y"]/G)**2 + (data["z"]/G)**2)   # use Pythagora to calculate total acceleration in m/s²
-    return 25
+    sense = SenseHat()
+    data = sense.get_accelerometer_raw()
+    return math.sqrt((data["x"]/G)**2 + (data["y"]/G)**2 + (data["z"]/G)**2)   # use Pythagora to calculate total acceleration in m/s²
+    #return 25
 
 def formula(x,a,R,t0,t1):
     
@@ -31,9 +31,10 @@ def formula(x,a,R,t0,t1):
                                             # y = R sin (omega*t) with omega = v * R
 
 def sampledata(t0):
-    accelerations=[]
-    while time.time_ns()-t0 < 1E9:
-        accelerations.append(getaccel)
+    accelerations=[getaccel()]
+    while time.time_ns ()- t0 < 1E9:
+        accelerations.append(getaccel())
+        #print(accelerations)
     return accelerations
 
 
@@ -62,5 +63,5 @@ x=V_0
 v=fsolve(formula,V_0, args=(accel,R,t0,t1))[0]
 
 with open('result.txt', 'w') as f:
-    f.write("{:.4f}".format(v[0]/1000))
+    f.write("{:.4f}".format(v/1000))
 f.close()
