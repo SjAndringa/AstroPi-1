@@ -61,6 +61,6 @@ t1=time.time_ns()
 x=V_0
 v=fsolve(formula,V_0, args=(accel,R,t0,t1))[0]
 
-f = open('result.txt', 'w')
-print(round(v/1000,4),file=f)
+with open('result.txt', 'w') as f:
+    f.write("{:.4f}".format(v[0]/1000))
 f.close()
