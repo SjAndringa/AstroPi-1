@@ -13,6 +13,9 @@ V_0 = OMEGA_0*R #initial estimate of velocity, in m/s
 G=9.80665 #Gforce, used to recalculate accelerometer from Gs to m/s²
             # maybe G isn't that value at that height
 
+SampleInterval=30 #wait time between two acceleration samples
+SampleTime = 8*60*1E9   #total time to gather information 8 minutes
+
 def initialize():
     sense = SenseHat()
     sense.set_imu_config(False, False, True)  # accelerometer only
@@ -30,10 +33,11 @@ def formula(x,a,R,t0,t1):
                                             # acceleration is second derivative of sine function
                                             # y = R sin (omega*t) with omega = v * R
 
-def sampledata(t0):
+def sampledata(t0,SampleTime):
     accelerations=[getaccel()]
-    while time.time_ns ()- t0 < 1E9:
+    while time.time_ns ()- t0 < SampleTime:
         accelerations.append(getaccel())
+        time.sleep(SampleInterval)
         #print(accelerations)
     return accelerations
 
@@ -55,7 +59,7 @@ def removeoutliers(accelerations): # thanks to Nessie: https://nessy.info/post/2
 #initialize
 t0=time.time_ns()
 #verander onderstaande code zodat je een minuut lang meet, of 5 minuten
-accelerations = sampledata(t0)
+accelerations = sampledata(t0,SampleTime)
 #accelerations = removeoutliers(accelerations)
 accel = np.median(accelerations)
 t1=time.time_ns()
