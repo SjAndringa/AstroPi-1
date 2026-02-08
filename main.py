@@ -18,7 +18,7 @@ G_0=9.80665 #Gforce, used to recalculate accelerometer from Gs to m/s²
 G=G_0*(R_earth/R_earth+H_esa)**2
 
 SampleInterval=10 #wait time between two acceleration samples
-SampleTime = 1*60*1E9   #total time to gather information 8 minutes
+SampleTime = 9*60*1E9   #total time to gather information 8 minutes
 
 def formula(x,a,R,t0,t1):
     
