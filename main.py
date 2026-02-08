@@ -26,13 +26,18 @@ def sampledata(t0,SampleTime,SampleInterval):
     sense = SenseHat()
     sense.set_imu_config(False, False, True)  # accelerometer only
     accelerations=[]
+    velocities = []
     while time.time_ns ()- t0 < SampleTime:
+        tstart=time.time_ns()
         data = sense.get_accelerometer_raw()
         getaccel=math.sqrt((data["x"]/G)**2 + (data["y"]/G)**2 + (data["z"]/G)**2)   # use Pythagora to calculate total acceleration in m/s²accelerations=[getaccel()]
         accelerations.append(getaccel)
         time.sleep(SampleInterval)
+        velocities.append(fsolve(formula,V_0, args=(getaccel,R,tstart,time.time_ns()))[0])
         #print(accelerations)
-    return accelerations
+    #return accelerations
+    return velocities
+
 
 
 t0=time.time_ns()
@@ -42,7 +47,8 @@ accelerations = sampledata(t0,SampleTime,SampleInterval)
 accel = np.median(accelerations)
 t1=time.time_ns()
 x=V_0
-v=fsolve(formula,V_0, args=(accel,R,t0,t1))[0]
+#v=fsolve(formula,V_0, args=(accel,R,t0,t1))[0]
+v=accel
 
 with open('result.txt', 'w') as f:
     f.write("{:.4f}".format(v/1000))
