@@ -32,7 +32,7 @@ def sampledata(t0,SampleTime,SampleInterval):
     accelerations=[]
     while time.time_ns ()- t0 < SampleTime:
         data = sense.get_accelerometer_raw()
-        getaccel=math.sqrt((data["x"]/G)**2 + (data["y"]/G)**2 + (data["z"]/G)**2)   # use Pythagora to calculate total acceleration in m/s²accelerations=[getaccel()]
+        getaccel=G*math.sqrt((data["x"])**2 + (data["y"])**2 + (data["z"])**2)   # use Pythagora to calculate total acceleration in m/s²accelerations=[getaccel()]
         accelerations.append(getaccel)
         time.sleep(SampleInterval)
         #print(accelerations)
