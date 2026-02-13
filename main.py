@@ -18,7 +18,7 @@ G_0=9.80665 #Gforce, used to recalculate accelerometer from Gs to m/s²
 G=G_0*(R_earth/R_earth+H_esa)**2
 
 SampleInterval=10 #wait time between two acceleration samples
-SampleTime = 9*60*1E9   #total time to gather information 8 minutes
+SampleTime = 9*60*1E9   #total time to gather information 9 minutes
 
 def formula(x,a,R,t0,t1):
     
@@ -40,13 +40,15 @@ def sampledata(t0,SampleTime,SampleInterval):
 
 
 t0=time.time_ns()
-#verander onderstaande code zodat je een minuut lang meet, of 8 minuten
+#measure for 9 minutes
 accelerations = sampledata(t0,SampleTime,SampleInterval)
 #accelerations = removeoutliers(accelerations)
-accel = np.median(accelerations)
+accel = np.median(accelerations) # take median of all samples
 t1=time.time_ns()
 x=V_0
+# solve equation with t0 and t1
 v=fsolve(formula,V_0, args=(accel,R,t0,t1))[0]
+
 
 with open('result.txt', 'w') as f:
     f.write("{:.4f}".format(v/1000))
