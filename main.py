@@ -42,11 +42,11 @@ def sampledata(t0,SampleTime,SampleInterval):
 t0=time.time_ns()
 #measure for 9 minutes
 accelerations = sampledata(t0,SampleTime,SampleInterval)
-#accelerations = removeoutliers(accelerations)
+
 accel = np.median(accelerations) # take median of all samples
 t1=time.time_ns()
 x=V_0
-# solve equation with t0 and t1
+# solve equation between t0 and t1
 v=fsolve(formula,V_0, args=(accel,R,t0,t1))[0]
 
 
